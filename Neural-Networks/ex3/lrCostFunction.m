@@ -35,10 +35,17 @@ grad = zeros(size(theta));
 %           temp(1) = 0;   % because we don't add anything for j = 0  
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
+HTheta = sigmoid(X * theta);
+JSummation = -y .* log(HTheta);
+JSummation  = JSummation - ((1-y) .* log(1 - HTheta));
+
+regTheta = theta;
+regTheta(1,1) = 0;
+
+J = (sum(JSummation)/m) + lambda/2/m * sum(regTheta .* regTheta);
 
 
-
-
+grad = (X' * (sigmoid(X * theta) - y)) / m + (regTheta * lambda / m);
 
 
 
