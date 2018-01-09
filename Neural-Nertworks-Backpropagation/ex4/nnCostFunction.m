@@ -62,14 +62,35 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% summation = 
 
+oneToTen = 1:num_labels;
+Y = zeros(size(y,1), num_labels);
 
+for i=1: size(y,1)
+    Y(i,:) = oneToTen;
+end
 
+Y = (Y == y);
 
+X = [ones(m,1) X];
 
+summation = 0;
+for i = 1: m
+    a2 = sigmoid(Theta1 * (X(i,:))');
+    a2 = [1;a2];
+    a3 = sigmoid(Theta2 * a2);
+    temp = (-Y(i,:))' .* log(a3);
+    temp = temp - ((1-Y(i,:))' .* log(1-a3));
+    summation = summation + sum(temp);
+end
+J = summation / m;
 
+temp = (Theta1(:,2:end));
+Theta1Sum = sum(sum(Theta1(:,2:end) .* Theta1(:,2:end)));
+Theta2Sum = sum(sum(Theta2(:,2:end) .* Theta2(:,2:end)));
 
-
+J = J + lambda/m/2 * (Theta1Sum + Theta2Sum);
 
 
 
