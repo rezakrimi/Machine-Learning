@@ -64,6 +64,8 @@ Theta2_grad = zeros(size(Theta2));
 
 % summation = 
 
+
+%Step 1
 oneToTen = 1:num_labels;
 Y = zeros(size(y,1), num_labels);
 
@@ -94,10 +96,43 @@ J = J + lambda/m/2 * (Theta1Sum + Theta2Sum);
 
 
 
+%Step 2
 
+Delta1 = zeros(size(Theta1));
+Delta2 = zeros(size(Theta2));
 
+for t=1: m
+    % Step 1
+    a1 = X(t,:);
+    z2 = Theta1 * a1';
+    a2 = sigmoid(z2);
+    a2 = [1; a2];
+    z3 = Theta2 * a2;
+    a3 = sigmoid(z3);
+    
+    % Step 2
+    
+    Y_k = Y(t, :);
+    d3 = a3 - Y_k';
+    
+    % Step 3
+    
+    d2 = Theta2(:, 2:end)' * d3 .* sigmoidGradient(z2);
+    temp = size(d3 * a2');
+    
+    Delta1 = Delta1 + d2 * a1;
+    Delta2 = Delta2 + d3 * a2';
+end
 
+% Theta1_grad = Delta1/m;
+% Theta2_grad = Delta2/m;
+D1 = Delta1(:, 1) / m;
+D1_regularized_term = Delta1(:, 2:end) / m + Theta1(:, 2:end) * lambda / m;
+Theta1_grad = [D1, D1_regularized_term];
 
+D2 = Delta2(:, 1) / m;
+D2_regularized_term = Delta2(:, 2:end) / m + Theta2(:, 2:end) * lambda / m;
+Theta2_grad = [D2, D2_regularized_term];
 
 
 
