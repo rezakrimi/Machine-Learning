@@ -34,10 +34,14 @@ J = sum(summation) / 2 / m + sum(regTerm);
 
 
 
+grad(1,1) = sum((X * theta - y) .* X(:, 1)) / m;
 
+for i=2: size(grad,1)
+    gradSum = X*theta-y;
+    gradSum = gradSum .* X(:,i);
+    grad(i,1) = (sum(gradSum)/m) + (lambda/m*theta(i,1));
 
-
-
+end
 
 
 

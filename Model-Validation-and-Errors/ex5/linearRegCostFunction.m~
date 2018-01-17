@@ -21,17 +21,27 @@ grad = zeros(size(theta));
 
 
 summation = X * theta;
-summation = X -y;
+summation = summation - y;
 summation = summation .* summation;
 
-if size(theta,1)>
+regTerm = 0;
+
+if size(theta,1) >= 2
+    regTerm = lambda / 2 / m * (theta(2:end) .* theta(2:end));
+end
+
+J = sum(summation) / 2 / m + sum(regTerm);
 
 
 
+grad(1,1) = sum((X * theta - y) .* X(:, 1)) / m;
 
+for i=2: size(grad,1)
+    summaiton = X * theta - y;
+    summation = summation .* X(:, i);
+    grad(i,1) = (sum(summation)/m) + (lambda/m*theta(i,1));
 
-
-
+end
 
 
 
