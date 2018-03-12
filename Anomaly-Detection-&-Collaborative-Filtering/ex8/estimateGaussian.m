@@ -22,9 +22,12 @@ sigma2 = zeros(n, 1);
 %
 
 
+mu_t = sum(X, 1) / m;
 
+sigma2 = bsxfun(@minus, X, mu_t) .^ 2;
+sigma2 = sum(sigma2, 1) / m;
 
-
+mu = mu_t';
 
 
 
